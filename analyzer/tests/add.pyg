@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+
+import tpg
+
+def opfunc(op):
+	return
+	{
+		'+': lambda x,y: x+y,
+		'-': lambda x,y: x-y
+	}[op]
+
+class Test(tpg.Parser):
+	r"""
+
+	separator	spaces:		'\s+'		;
+	token		number:		'\d+'		$int
+	token		add:		'[+-]'		$opfunc
+										;
+
+	START/e -> EXPR/e;
+
+	EXPR/e -> number/e ( add/op EXPR/t $ e=op(e,t) $ )* ;
+
+	"""
+
+t = Test()
+
+while 1:
+	l = raw_input(":")
+	if l == 'exit':
+		break
+	if l:
+		try:
+			print t(l)
+		except Exception:
+			print tpg.exc()
+	else:
+		break

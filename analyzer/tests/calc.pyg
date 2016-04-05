@@ -14,10 +14,11 @@ def make_op(op):
 class Calc(tpg.Parser):
 	r"""
 
-	separator spaces: '\s+' ;
-	token number: '\d+' int ;
-	token add: '[+-]' make_op ;
-	token mul: '[*/]' make_op ;
+	separator spaces:	'\s+' ;
+
+	token number:		'\d+'	int ;
+	token add:			'[+-]'	make_op ;
+	token mul:			'[*/]'	make_op ;
 
 	START/e -> Expr/e ;
 	Expr/e -> Term/e ( add/op term/t $ e=op(e,t) $ )* ;
