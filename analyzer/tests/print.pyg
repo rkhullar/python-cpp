@@ -1,27 +1,58 @@
 #!/usr/bin/env python
 
+"""
+@author		:	Rajan Khullar
+@created	:	04/02/16
+@updated	:	04/06/16
+"""
+
+from sys import argv
 import tpg
 
-class Test(tpg.Parser):
+if len(argv) < 2:
+	print 'no filepath given'
+	exit(1)
+
+INPUT = argv[1]
+
+ops =	{
+			'+': lambda x,y: x+y,
+			'-': lambda x,y: x-y
+		}
+def op(sym):
+	return ops[sym]
+
+
+def gen(v):
+	t = type(v).__name__
+	s = str(v)
+	if t == 'str':
+		s = s[1:-1]
+	print "<{:s}>{:s}</{:s}>".format(t,s,t)
+
+class Kami(tpg.Parser):
 	r"""
 
-	separator spaces: '\s+' ;
-	token number: '\d+' int ;
+	separator	spaces	:	'\s+'		;
+	token		number	:	'\d+'		$ int
+	token		string	:	'\'.+\''	$ str
+	token		add		:	'[+-]'		$ op
+	token		cout	:	'print'		;
 
-	START/e -> number/n $e = n$;
-
+	START	->	cout EXPR				;
+	EXPR	->	number/x				$ gen(x)
+			|	string/x				$ gen(x)
+			;
 	"""
 
-t = Test()
+kami = Kami()
 
-while 1:
-	l = raw_input(":")
-	if l == 'exit':
-		break
-	if l:
-		try:
-			print t(l)
-		except Exception:
-			print tpg.exc()
-	else:
-		break
+with open(INPUT, 'r') as file:
+	for line in file:
+		if line:
+			try:
+				kami(line)
+			except Exception:
+				print tpg.exc()
+		else:
+			break
