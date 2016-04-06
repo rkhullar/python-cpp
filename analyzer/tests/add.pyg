@@ -2,33 +2,33 @@
 
 import tpg
 
-def opfunc(op):
-	return
-	{
-		'+': lambda x,y: x+y,
-		'-': lambda x,y: x-y
-	}[op]
+ops =	{
+			'+': lambda x,y: x+y,
+			'-': lambda x,y: x-y
+		}
+def op(sym):
+	return ops[sym]
 
-class Test(tpg.Parser):
+
+class Adder(tpg.Parser):
 	r"""
 
-	separator	spaces:		'\s+'		;
-	token		number:		'\d+'		$int
-	token		add:		'[+-]'		$opfunc
-										;
+	separator	spaces	:	'\s+'	;
+	token		number	:	'\d+'	$ int
+	token		add		:	'[+-]'	$ op
+									;
 
-	START/e -> EXPR/e;
-
-	EXPR/e -> number/e ( add/op EXPR/t $ e=op(e,t) $ )* ;
-
+	START/x	->	SB/b						$ x = b
+			|	SA/a						$ x = a
+			;
+	SA/x	->	number/a					$ x = a			$;
+	SB/x	->	number/a add/op number/b	$ x = op(a,b)	$;
 	"""
 
-t = Test()
+t = Adder()
 
 while 1:
 	l = raw_input(":")
-	if l == 'exit':
-		break
 	if l:
 		try:
 			print t(l)
