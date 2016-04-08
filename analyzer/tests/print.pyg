@@ -3,11 +3,12 @@
 """
 @author		:	Rajan Khullar
 @created	:	04/02/16
-@updated	:	04/06/16
+@updated	:	04/07/16
 """
 
 from sys import argv
 import tpg
+import xml.etree.ElementTree as ET
 
 if len(argv) < 2:
 	print 'no filepath given'
@@ -28,7 +29,9 @@ def gen(v):
 	s = str(v)
 	if t == 'str':
 		s = s[1:-1]
-	print "<{:s}>{:s}</{:s}>".format(t,s,t)
+	node = ET.Element(t)
+	node.text = s
+	ET.dump(node)
 
 class Kami(tpg.Parser):
 	r"""
