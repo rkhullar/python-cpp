@@ -1,0 +1,26 @@
+<var id='a' type='int' val='5' />
+<print>
+	<var id='a' />
+</print>
+<print>
+	<int>1</int>
+</print>
+<print>
+	<str>hello world</str>
+</print>
+<print>
+	<int val='1' />
+	<int val='2' />
+	<str val='three' />
+	<var id='a' />
+</print>
+<list id='b' type='str'>
+	<item>A</item>
+	<item val='B' />
+	<item>C</item>
+</list>
+<assign list='b' index='2' val='X' />
+<append list='b' val='D' />
+<print>
+	<list id='b' />
+</print>
