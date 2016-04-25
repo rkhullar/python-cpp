@@ -70,3 +70,4 @@ if __name__ == '__main__':
 	p.addstmt('assign', 'a', 5)
 	p.addstmt('print', 'a')
 	print p
+	print p.__class__
