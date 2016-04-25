@@ -1,4 +1,4 @@
-<var id='a' type='int' val='5' />
+<var id='a' type='int' val='4' />
 <print>
 	<var id='a' />
 </print>

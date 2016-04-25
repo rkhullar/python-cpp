@@ -3,44 +3,70 @@
 """
 @author		:	Rajan Khullar
 @created	:	04/02/16
-@updated	:	04/06/16
+@updated	:	04/25/16
 """
 
-import xml.etree.ElementTree as ET
-
-root = ET.Element('program')
-main = ET.SubElement(root, 'main')
-p = ET.SubElement(main,'print')
-a = ET.SubElement(p,'int')
-a.text = 'Hello World'
-
-ET.dump(root)
-
-class Program:
+class program:
 	def __init__(self):
-		self.clazzlist = []
+		self.structs = []
 		self.main = []
 
-class Clazz:
+	def __str__(self):
+		o = ''
+		for line in self.main:
+			o += str(line) + '\n'
+		return o
+
+	def addvar(self, *args):
+		self.main.append(variable(*args))
+
+	def addstmt(self, *args):
+		self.main.append(statement(*args))
+
+class struct:
 	def __init__(self):
-		self.attributes = []
-		self.methods = []
+		self.members = []
 
-LIST = 1
-DICT = 2
-
-class Variable:
-	def __init__(self, name, type, struct = None):
+class variable:
+	def __init__(self, name, type, value=None):
 		self.name = name
 		self.type = type
-		self.struct = struct
+		self.value = value
 
-class Function:
-	def __init__(self, name, type = None):
-		self.name = name
-		self.input = []
-		self.type = type
-		self.body = []
+	def __str__(self):
+		n = str(self.name)
+		t = str(self.type)
+		v = str(self.value)
+		if self.value:
+			return '%s %s = %s;' % (t, n, v)
+		else:
+			return '%s %s;' % (t, n, v)
 
-class Statement:
+class list(variable):
 	pass
+
+class object(variable):
+	pass
+
+class statement:
+	def __init__(self, oper, *args):
+		self.oper = oper
+		self.args = args
+
+	def __str__(self):
+		if self.oper == 'assign':
+			var = self.args[0]
+			exp = self.args[1]
+			return '%s = %s;' % (str(var), str(exp))
+		if self.oper == 'print':
+			o = 'cout'
+			for exp in self.args:
+				o += ' << '+exp
+			return o + ' << endl;'
+
+if __name__ == '__main__':
+	p = program()
+	p.addvar('a', 'int', 4)
+	p.addstmt('assign', 'a', 5)
+	p.addstmt('print', 'a')
+	print p
