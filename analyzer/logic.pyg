@@ -1,0 +1,63 @@
+#!/usr/bin/env python
+
+"""
+@author		:	Rajan Khullar
+@created	:	04/02/16
+@updated	:	04/26/16
+"""
+
+import tpg
+import meta
+
+class pwrap:
+	ops = {
+		'+': lambda x,y: x+y,
+		'-': lambda x,y: x-y
+		}
+
+	@staticmethod
+	def op(sym):
+		return pwrap.ops[sym]
+
+	@staticmethod
+	def gen(v):
+		t = type(v).__name__
+		s = str(v)
+		if t == 'str':
+			s = s[1:-1]
+			print s
+
+	def __init__(self, fp):
+		self.fp = fp
+		self.m = magic()
+
+	def parse(self):
+		with open(self.fp, 'r') as file:
+			for line in file:
+				if line.strip():
+					try:
+						self.m(line)
+					except Exception:
+						print tpg.exc()
+				else:
+					break
+
+class magic(tpg.Parser):
+	r"""
+
+	separator	spaces	:	'\s+'		;
+	token		number	:	'\d+'		$ int
+	token		string	:	'\'.+\''	$ str
+	token		assign	:	'='			$ pwrap.op
+	token		cout	:	'print'		$ pwrap.op
+	token		add		:	'[+-]'		$ pwrap.op
+
+	START	->	cout EXPR				;
+	EXPR	->	number/x				$ pwrap.gen(x)
+			|	string/x				$ pwarp.gen(x)
+			;
+	"""
+
+if __name__ == '__main__':
+	o = pwrap('parser-1.in')
+	o.parse()
