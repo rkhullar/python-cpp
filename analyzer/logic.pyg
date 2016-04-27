@@ -9,25 +9,45 @@
 import tpg
 from pwrap import *
 
-#	EXPRL	->	(EXPR comma)* EXPR		$ pwrap.test('sucks')
 class magic(tpg.Parser):
 	r"""
 
-	separator	spaces	:	'\s+'			;
-	token		comma	:	','				;
-	token		number	:	'\d+'			$ int
-	token		string	:	'\'.+\''		$ str
-	token		assign	:	'='				;
-	token		output	:	'print'			$ ops
-	token		var		:	'[a-zA-Z_]\w*'	;
-	token		add		:	'[+-]'			;
+	separator	spaces	:	'\s+'					;
+	token		natural	:	'\d+'					$ int
+	token		string	:	'\'[a-zA-Z0-9_]*\''		$ str
+	token		assign	:	'='						;
+	token		output	:	'print'					$ ops
+	token		var		:	'[a-zA-Z_]\w*'			;
+	token		add		:	'[+-]'					;
 
-	START/x		->	output/op EXPR/e	$ x = op(e)			$;
-	EXPR/x		->	number/n			$ x = gen(n)
+	START/x		->	output/op EXPRL/e	$ x = op(e)				$;
+	#EXPRL/l	->	EXPR/a $l=[a]$ (EXPR/a $l.append(a)$)*;
+	EXPRL/l		->	EXPR/a				$ l = [a]
+				   (
+				   	EXPR/a				$ l.append(a)
+				   )*
+				;
+	EXPR/x		->	natural/n			$ x = gen(n)
 				|	string/s			$ x = gen('"'+s[1:-1]+'"')
 				;
 	"""
 
 if __name__ == '__main__':
 	m = magic()
-	print m("print 'b'")
+	def p(s):
+		print s
+	t = lambda s: p(m(s))
+
+	# print naturals
+	t("print 0")
+	t("print 1")
+	t("print 99")
+
+	# print strings
+	t("print ''")
+	t("print 'one'")
+	t("print '0N_96b'")
+
+	# print lists
+	t("print 0 1 2 3 4 5 6 7 8 9")
+	t("print 'this' 'is' 'a' 'string' 'list'")

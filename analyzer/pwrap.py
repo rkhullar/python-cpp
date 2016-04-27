@@ -11,7 +11,7 @@ from meta import *
 operations = {
 	'+':		lambda x,y: x+y,
 	'-':		lambda x,y: x-y,
-	'print':	lambda exp: statement('print', exp)
+	'print':	lambda exl: statement('print', exl)
 }
 
 def ops(sym):

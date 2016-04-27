@@ -3,7 +3,7 @@
 """
 @author		:	Rajan Khullar
 @created	:	04/02/16
-@updated	:	04/25/16
+@updated	:	04/27/16
 """
 
 class program:
@@ -64,7 +64,7 @@ class statement:
 			return '%s = %s;' % (str(var), str(exp))
 		if self.oper == 'print':
 			o = 'cout'
-			for exp in self.args:
+			for exp in self.args[0]:
 				o += ' << ' + str(exp)
 			return o + ' << endl;'
 
