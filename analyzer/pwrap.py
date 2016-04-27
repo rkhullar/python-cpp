@@ -8,11 +8,14 @@
 
 from meta import *
 
+def assign(*args):
+	return statement('assign', *args)
+
 operations = {
-	'+':		lambda x,y: x+y,
-	'-':		lambda x,y: x-y,
-	'=':		lambda v,e:	statement('assign', v, e),
-	'print':	lambda exl: statement('print', exl)
+	'+':		lambda x,y:		x+y,
+	'-':		lambda x,y:		x-y,
+	'=':		assign,
+	'print':	lambda exl:		statement('print', exl)
 }
 
 def ops(sym):
@@ -27,7 +30,11 @@ def test(x):
 	return x
 
 if __name__ == '__main__':
+	'''
 	f = ops('+')
 	print f(1, 2)
 	f = ops('print')
 	print f('a')
+	'''
+	f = ops('=')
+	print f('a', 4, 3)

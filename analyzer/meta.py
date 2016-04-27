@@ -12,10 +12,7 @@ class program:
 		self.main = []
 
 	def __str__(self):
-		o = ''
-		for node in self.main:
-			o += str(node) + '\n'
-		return o
+		return '\n'.join(map(str, self.main))
 
 	def addlogic(self, node):
 		if node.__class__.__name__ in ['statement', 'variable']:
@@ -59,10 +56,14 @@ class statement:
 
 	def __str__(self):
 		if self.oper == 'assign':
+			var = self.args[0]
 			if len(self.args) == 2:
-				var = self.args[0]
 				exp = self.args[1]
 				return '%s = %s;' % (str(var), str(exp))
+			if len(self.args) == 3:
+				key = self.args[1]
+				exp = self.args[2]
+				return '%s.set(%s, %s);' % (str(var), str(key), str(exp))
 
 		if self.oper == 'print':
 			l = map(str, self.args[0])
@@ -72,6 +73,6 @@ if __name__ == '__main__':
 	p = program()
 	p.addvar('a', 'int', 4)
 	p.addstmt('assign', 'a', 5)
-	p.addstmt('print', 'a')
+	p.addstmt('print', 'a', 2)
 	print p
 	print p.__class__
