@@ -13,9 +13,13 @@ class program:
 
 	def __str__(self):
 		o = ''
-		for line in self.main:
-			o += str(line) + '\n'
+		for node in self.main:
+			o += str(node) + '\n'
 		return o
+
+	def addlogic(self, node):
+		if node.__class__.__name__ in ['statement', 'variable']:
+			self.main.append(node)
 
 	def addvar(self, *args):
 		self.main.append(variable(*args))
@@ -61,7 +65,7 @@ class statement:
 		if self.oper == 'print':
 			o = 'cout'
 			for exp in self.args:
-				o += ' << '+exp
+				o += ' << ' + str(exp)
 			return o + ' << endl;'
 
 if __name__ == '__main__':

@@ -18,13 +18,13 @@ class magic(tpg.Parser):
 	token		number	:	'\d+'			$ int
 	token		string	:	'\'.+\''		$ str
 	token		assign	:	'='				;
-	token		out		:	'print'			;
+	token		output	:	'print'			$ ops
 	token		var		:	'[a-zA-Z_]\w*'	;
 	token		add		:	'[+-]'			;
 
-	START/x		->	out EXPR/e			$ x = e	$;
+	START/x		->	output/op EXPR/e	$ x = op(e)			$;
 	EXPR/x		->	number/n			$ x = gen(n)
-				|	string/s			$ x = gen(s[1:-1])
+				|	string/s			$ x = gen('"'+s[1:-1]+'"')
 				;
 	"""
 

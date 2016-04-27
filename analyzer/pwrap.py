@@ -8,24 +8,25 @@
 
 from meta import *
 
-ops = {
-	'+': lambda x,y: x+y,
-	'-': lambda x,y: x-y
+operations = {
+	'+':		lambda x,y: x+y,
+	'-':		lambda x,y: x-y,
+	'print':	lambda exp: statement('print', exp)
 }
 
-def op(sym):
-	return ops[sym]
+def ops(sym):
+	return operations[sym]
 
 def gen(v):
 	#print type(v).__name__, v
 	return v
 
 def test(x):
-	print x
-
-def out(exp):
-	return statement('print', exp)
+	print type(x).__name__, x
+	return x
 
 if __name__ == '__main__':
-	f = op('+')
+	f = ops('+')
 	print f(1, 2)
+	f = ops('print')
+	print f('a')

@@ -19,7 +19,8 @@ class phase1:
 			for line in file:
 				if line.strip():
 					try:
-						print self.m(line)
+						node = self.m(line)
+						self.p.addlogic(node)
 					except Exception:
 						print tpg.exc()
 				else:
