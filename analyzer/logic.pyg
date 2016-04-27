@@ -7,26 +7,27 @@
 """
 
 import tpg
-import pwrap
+from pwrap import *
 
 #	EXPRL	->	(EXPR comma)* EXPR		$ pwrap.test('sucks')
 class magic(tpg.Parser):
 	r"""
 
-	separator	spaces	:	'\s+'		;
-	token		comma	:	','			;
-	token		number	:	'\d+'		$ int
-	token		string	:	'\'.+\''	$ str
-	token		assign	:	'='			;
-	token		cout	:	'print'		;
-	token		add		:	'[+-]'		;
+	separator	spaces	:	'\s+'			;
+	token		comma	:	','				;
+	token		number	:	'\d+'			$ int
+	token		string	:	'\'.+\''		$ str
+	token		assign	:	'='				;
+	token		out		:	'print'			;
+	token		var		:	'[a-zA-Z_]\w*'	;
+	token		add		:	'[+-]'			;
 
-	START	->	cout EXPR/x				;
-	EXPR/e	->	number/x				$ e = x
-			|	string/x				$ e = x[1:-1]
-			;
+	START/x		->	out EXPR/e			$ x = e	$;
+	EXPR/x		->	number/n			$ x = gen(n)
+				|	string/s			$ x = gen(s[1:-1])
+				;
 	"""
 
 if __name__ == '__main__':
 	m = magic()
-	print m("print 'a'")
+	print m("print 'b'")

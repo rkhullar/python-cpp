@@ -19,7 +19,7 @@ class phase1:
 			for line in file:
 				if line.strip():
 					try:
-						self.m(line)
+						print self.m(line)
 					except Exception:
 						print tpg.exc()
 				else:
@@ -29,3 +29,4 @@ if __name__ == '__main__':
 	o = phase1('input/parser-1.in')
 	o.parse()
 	print o.p
+	print 'end'
