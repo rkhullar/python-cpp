@@ -3,7 +3,7 @@
 """
 @author		:	Rajan Khullar
 @created	:	04/02/16
-@updated	:	04/26/16
+@updated	:	04/27/16
 """
 
 import tpg
@@ -15,22 +15,32 @@ class magic(tpg.Parser):
 	separator	spaces	:	'\s+'					;
 	token		natural	:	'\d+'					$ int
 	token		string	:	'\'[a-zA-Z0-9_]*\''		$ str
-	token		assign	:	'='						;
+	token		assign	:	'='						$ ops
 	token		output	:	'print'					$ ops
-	token		var		:	'[a-zA-Z_]\w*'			;
-	token		add		:	'[+-]'					;
+	token		var		:	'[a-zA-Z_]\w*'			$ str
+	token		add		:	'[+-]'					$ ops
 
-	START/x		->	output/op EXPRL/e	$ x = op(e)				$;
-	#EXPRL/l	->	EXPR/a $l=[a]$ (EXPR/a $l.append(a)$)*;
-	EXPRL/l		->	EXPR/a				$ l = [a]
+	START/x		->	PRINT/s								$ x = s
+				|	ASSIGN/s							$ x = s
+				;
+	ASSIGN/x	->	var/v assign/op EXPR/e				$ x = op(v,e)
+				|	var/v natural/n assign/op EXPR/e	$ x = (v,n,e)
+				;
+	PRINT/x		->	output/op EXPRL/e					$ x = op(e)	$;
+	EXPRL/l		->	EXPR/a								$ l = [a]
 				   (
-				   	EXPR/a				$ l.append(a)
+				   	EXPR/a								$ l.append(a)
 				   )*
 				;
-	EXPR/x		->	natural/n			$ x = gen(n)
-				|	string/s			$ x = gen('"'+s[1:-1]+'"')
+	EXPR/x		->	natural/n							$ x = gen(n)
+				|	string/s							$ x = gen('"'+s[1:-1]+'"')
 				;
 	"""
+
+	""" Alternative / Rejected Regular Expressions:
+	EXPRL/l	->	EXPR/a $l=[a]$ (EXPR/a $l.append(a)$)*;
+	"""
+
 
 if __name__ == '__main__':
 	m = magic()
@@ -49,5 +59,9 @@ if __name__ == '__main__':
 	t("print '0N_96b'")
 
 	# print lists
-	t("print 0 1 2 3 4 5 6 7 8 9")
-	t("print 'this' 'is' 'a' 'string' 'list'")
+	t("print 0 1 2 3")
+	t("print 'a' 'b' 'c' 'd'")
+
+	# assignments
+	t("a = 5")
+	t("b 3 = 'poop'")

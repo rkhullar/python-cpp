@@ -11,6 +11,7 @@ from meta import *
 operations = {
 	'+':		lambda x,y: x+y,
 	'-':		lambda x,y: x-y,
+	'=':		lambda v,e:	statement('assign', v, e),
 	'print':	lambda exl: statement('print', exl)
 }
 

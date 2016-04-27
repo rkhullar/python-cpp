@@ -59,14 +59,14 @@ class statement:
 
 	def __str__(self):
 		if self.oper == 'assign':
-			var = self.args[0]
-			exp = self.args[1]
-			return '%s = %s;' % (str(var), str(exp))
+			if len(self.args) == 2:
+				var = self.args[0]
+				exp = self.args[1]
+				return '%s = %s;' % (str(var), str(exp))
+
 		if self.oper == 'print':
-			o = 'cout'
-			for exp in self.args[0]:
-				o += ' << ' + str(exp)
-			return o + ' << endl;'
+			l = map(str, self.args[0])
+			return 'cout << ' + ' << " " << '.join(l) + ' << endl;'
 
 if __name__ == '__main__':
 	p = program()

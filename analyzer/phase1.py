@@ -23,8 +23,6 @@ class phase1:
 						self.p.addlogic(node)
 					except Exception:
 						print tpg.exc()
-				else:
-					break
 
 if __name__ == '__main__':
 	o = phase1('input/parser-1.in')
