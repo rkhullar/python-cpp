@@ -8,22 +8,30 @@
 
 from meta import *
 
+## grammar functions
 def assign(*args):
 	return statement('assign', *args)
 
+def list(var, type):
+	return statement('list', var, type)
+
+def append(*args):
+	return statement('append', *args)
+
+## token functions
 operations = {
 	'+':		lambda x,y:		x+y,
 	'-':		lambda x,y:		x-y,
+	'print':	lambda exl:		statement('print', exl),
 	'=':		assign,
-	'print':	lambda exl:		statement('print', exl)
+	'<<':		append
 }
 
 def ops(sym):
 	return operations[sym]
 
-def gen(v):
-	#print type(v).__name__, v
-	return v
+def typ(arg):
+	return str(arg)[1::]
 
 def test(x):
 	print type(x).__name__, x

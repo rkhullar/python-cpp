@@ -3,7 +3,7 @@
 """
 @author		:	Rajan Khullar
 @created	:	04/02/16
-@updated	:	04/27/16
+@updated	:	04/30/16
 """
 
 class program:
@@ -56,23 +56,35 @@ class statement:
 
 	def __str__(self):
 		if self.oper == 'assign':
-			var = self.args[0]
+			var = str(self.args[0])
 			if len(self.args) == 2:
-				exp = self.args[1]
-				return '%s = %s;' % (str(var), str(exp))
+				exp = str(self.args[1])
+				return '%s = %s;' % (var, exp)
 			if len(self.args) == 3:
-				key = self.args[1]
-				exp = self.args[2]
-				return '%s.set(%s, %s);' % (str(var), str(key), str(exp))
+				key = str(self.args[1])
+				exp = str(self.args[2])
+				return '%s.set(%s, %s);' % (var, key, exp)
 
 		if self.oper == 'print':
 			l = map(str, self.args[0])
 			return 'cout << ' + ' << " " << '.join(l) + ' << endl;'
+
+		if self.oper == 'list':
+			typ = self.args[1]
+			var = self.args[0]
+			return 'list<%s> %s = new list<%s>();' % (typ, var, typ)
+
+		if self.oper == 'append':
+			var = str(self.args[0])
+			exp = str(self.args[1])
+			return '%s.append(%s);' % (var, exp)
+
 
 if __name__ == '__main__':
 	p = program()
 	p.addvar('a', 'int', 4)
 	p.addstmt('assign', 'a', 5)
 	p.addstmt('print', 'a', 2)
+	p.addstmt('list', 'c', 'int')
 	print p
 	print p.__class__
