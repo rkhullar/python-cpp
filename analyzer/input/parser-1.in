@@ -11,5 +11,11 @@ a = c[8]
 print a
 print c[5]
 
-a = int[]
-b = str[]
+a = $int[]
+b = $str[]
+c = $box[]
+
+a << 5
+b << 'six'
+c << 7
+c << var
