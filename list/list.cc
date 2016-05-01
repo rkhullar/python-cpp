@@ -7,6 +7,8 @@
 
 using namespace std;
 
+/* Linked list structure */
+
 template <class T>
 class ListNode
 {
@@ -16,13 +18,19 @@ class ListNode
 
     private:
         T data;
+        ListNode *prev =NULL;
+        ListNode *next=NULL;
 
 };
 
 template <class T>
 ListNode<T>::ListNode(T data)
 {
-    this->data = data;
+  ListNode node  = new ListNode;
+  node.data= data;
+  node.prev->node.data;
+
+//    this->data = data;
 }
 
 template <class T>
