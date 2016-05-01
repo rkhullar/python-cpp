@@ -122,7 +122,7 @@ class statement:
 		if self.oper == 'append':
 			var = str(self.args[0])
 			exp = str(self.args[1])
-			return '%s.append(%s);' % (var, exp)
+			return '%s.addNode(%s);' % (var, exp)
 
 
 if __name__ == '__main__':
