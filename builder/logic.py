@@ -14,32 +14,6 @@ class magic(tpg.Parser):
 
 	separator	spaces	:	'\s+'					;
 	token		natural	:	'\d+'					$ int
-<<<<<<< HEAD
-	token		string	:	'\'[a-zA-Z0-9_\s]*\''	$ str
-	token		output	:	'print'					$ ops
-	token		assign	:	'='						$ ops
-	token		append	:	'<<'					$ ops
-	token		var		:	'[a-zA-Z_]+'			$ str
-	token		type	:	'\$[a-zA-Z_]+'			$ typ
-	token		add		:	'[+-]'					$ ops
-
-#	token		type	:	'\$int|\$str'			$ typ
-
-	START/x		->	LIST/s										$ x = s
-				|	PRINT/s										$ x = s
-				|	ASSIGN/s									$ x = s
-				|	APPEND/s									$ x = s
-				;
-	PRINT/x		->	output/op EXPRL/e							$ x = op(e)		$;
-
-	LIST/x		->	var/v assign type/t '\[\]'					$ x = list(v,t)	$;
-
-	APPEND/x	->	var/v append/op EXPR/e						$ x = op(v,e)	$;
-
-	ASSIGN/x	->	var/v assign/op EXPR/e						$ x = op(v,e)
-				|	var/v '\[' natural/n '\]' assign/op EXPR/e	$ x = op(v,n,e)
-				;
-=======
 	token		string	:	'\'[a-zA-Z0-9_]*\''		$ str
 	token		assign	:	'='						$ ops
 	token		output	:	'print'					$ ops
@@ -53,7 +27,6 @@ class magic(tpg.Parser):
 				|	var/v '\[' natural/n '\]' assign/op EXPR/e	$ x = op(v,n,e)
 				;
 	PRINT/x		->	output/op EXPRL/e							$ x = op(e)	$;
->>>>>>> cbcf7eaa24df4357b9f8f53f1f9dce0922053d33
 	EXPRL/l		->	EXPR/a										$ l = [a]
 				   (
 				   	',' EXPR/a									$ l.append(a)
@@ -68,20 +41,6 @@ class magic(tpg.Parser):
 
 	def init_lexer(self):
 	    lexer = tpg.NamedGroupLexer(True, 0)
-<<<<<<< HEAD
-	    lexer.def_token('_tok_1', r'\[\]')
-	    lexer.def_token('_tok_2', r'\[')
-	    lexer.def_token('_tok_3', r'\]')
-	    lexer.def_token('_tok_4', r',')
-	    lexer.def_separator('spaces', r'\s+')
-	    lexer.def_token('natural', r'\d+', int)
-	    lexer.def_token('string', r'\'[a-zA-Z0-9_\s]*\'', str)
-	    lexer.def_token('output', r'print', ops)
-	    lexer.def_token('assign', r'=', ops)
-	    lexer.def_token('append', r'<<', ops)
-	    lexer.def_token('var', r'[a-zA-Z_]+', str)
-	    lexer.def_token('type', r'\$[a-zA-Z_]+', typ)
-=======
 	    lexer.def_token('_tok_1', r'\[')
 	    lexer.def_token('_tok_2', r'\]')
 	    lexer.def_token('_tok_3', r',')
@@ -91,56 +50,10 @@ class magic(tpg.Parser):
 	    lexer.def_token('assign', r'=', ops)
 	    lexer.def_token('output', r'print', ops)
 	    lexer.def_token('var', r'[a-zA-Z_]\w*', str)
->>>>>>> cbcf7eaa24df4357b9f8f53f1f9dce0922053d33
 	    lexer.def_token('add', r'[+-]', ops)
 	    return lexer
 
 	def START(self, ):
-<<<<<<< HEAD
-	    r""" ``START -> LIST | PRINT | ASSIGN | APPEND ;`` """
-	    _p1 = self.lexer.token()
-	    try:
-	        try:
-	            s = self.LIST()
-	            x = s
-	        except tpg.WrongToken:
-	            self.lexer.back(_p1)
-	            s = self.PRINT()
-	            x = s
-	    except tpg.WrongToken:
-	        self.lexer.back(_p1)
-	        try:
-	            s = self.ASSIGN()
-	            x = s
-	        except tpg.WrongToken:
-	            self.lexer.back(_p1)
-	            s = self.APPEND()
-	            x = s
-	    return x
-
-	def PRINT(self, ):
-	    r""" ``PRINT -> output EXPRL ;`` """
-	    op = self.eat('output')
-	    e = self.EXPRL()
-	    x = op(e)		
-	    return x
-
-	def LIST(self, ):
-	    r""" ``LIST -> var assign type '\[\]' ;`` """
-	    v = self.eat('var')
-	    assign = self.eat('assign')
-	    t = self.eat('type')
-	    self.eat('_tok_1') # '\[\]'
-	    x = list(v,t)	
-	    return x
-
-	def APPEND(self, ):
-	    r""" ``APPEND -> var append EXPR ;`` """
-	    v = self.eat('var')
-	    op = self.eat('append')
-	    e = self.EXPR()
-	    x = op(v,e)	
-=======
 	    r""" ``START -> PRINT | ASSIGN ;`` """
 	    _p1 = self.lexer.token()
 	    try:
@@ -150,7 +63,6 @@ class magic(tpg.Parser):
 	        self.lexer.back(_p1)
 	        s = self.ASSIGN()
 	        x = s
->>>>>>> cbcf7eaa24df4357b9f8f53f1f9dce0922053d33
 	    return x
 
 	def ASSIGN(self, ):
@@ -164,22 +76,14 @@ class magic(tpg.Parser):
 	    except tpg.WrongToken:
 	        self.lexer.back(_p1)
 	        v = self.eat('var')
-<<<<<<< HEAD
-	        self.eat('_tok_2') # '\['
-	        n = self.eat('natural')
-	        self.eat('_tok_3') # '\]'
-=======
 	        self.eat('_tok_1') # '\['
 	        n = self.eat('natural')
 	        self.eat('_tok_2') # '\]'
->>>>>>> cbcf7eaa24df4357b9f8f53f1f9dce0922053d33
 	        op = self.eat('assign')
 	        e = self.EXPR()
 	        x = op(v,n,e)
 	    return x
 
-<<<<<<< HEAD
-=======
 	def PRINT(self, ):
 	    r""" ``PRINT -> output EXPRL ;`` """
 	    op = self.eat('output')
@@ -187,7 +91,6 @@ class magic(tpg.Parser):
 	    x = op(e)	
 	    return x
 
->>>>>>> cbcf7eaa24df4357b9f8f53f1f9dce0922053d33
 	def EXPRL(self, ):
 	    r""" ``EXPRL -> EXPR (',' EXPR)* ;`` """
 	    a = self.EXPR()
@@ -195,11 +98,7 @@ class magic(tpg.Parser):
 	    while True:
 	        _p1 = self.lexer.token()
 	        try:
-<<<<<<< HEAD
-	            self.eat('_tok_4') # ','
-=======
 	            self.eat('_tok_3') # ','
->>>>>>> cbcf7eaa24df4357b9f8f53f1f9dce0922053d33
 	            a = self.EXPR()
 	            l.append(a)
 	        except tpg.WrongToken:
@@ -222,15 +121,9 @@ class magic(tpg.Parser):
 	        self.lexer.back(_p1)
 	        try:
 	            v = self.eat('var')
-<<<<<<< HEAD
-	            self.eat('_tok_2') # '\['
-	            n = self.eat('natural')
-	            self.eat('_tok_3') # '\]'
-=======
 	            self.eat('_tok_1') # '\['
 	            n = self.eat('natural')
 	            self.eat('_tok_2') # '\]'
->>>>>>> cbcf7eaa24df4357b9f8f53f1f9dce0922053d33
 	            x = expr('list', v, n)
 	        except tpg.WrongToken:
 	            self.lexer.back(_p1)
@@ -250,11 +143,8 @@ if __name__ == '__main__':
 		print s
 	t = lambda s: p(m(s))
 
-<<<<<<< HEAD
-=======
 	# print naturals
 	t("print 0")
->>>>>>> cbcf7eaa24df4357b9f8f53f1f9dce0922053d33
 	t("print 1")
 	t("print 99")
 
@@ -267,11 +157,7 @@ if __name__ == '__main__':
 	t("print a")
 	t("print b")
 
-<<<<<<< HEAD
-	# print lists	LIST/x		->	var/v '\:' type/t '\[\]'					$ x = list(v,t) $;
-=======
 	# print lists
->>>>>>> cbcf7eaa24df4357b9f8f53f1f9dce0922053d33
 	t("print 0, 1, 2, 3")
 	t("print 'a', 'b', 'c', 'd'")
 
@@ -281,13 +167,3 @@ if __name__ == '__main__':
 
 	# print list items
 	t("print a[2]")
-<<<<<<< HEAD
-
-	# create lists
-	t("c = $int[]")
-	t("d = $box[]")
-
-	## append to lists
-	t("s << 'hi'")
-=======
->>>>>>> cbcf7eaa24df4357b9f8f53f1f9dce0922053d33

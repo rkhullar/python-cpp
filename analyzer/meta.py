@@ -149,5 +149,9 @@ if __name__ == '__main__':
 	p.addstmt('print', 'a', 2)
 	p.addstmt('list', 'c', 'int')
 	print p
+<<<<<<< HEAD
 	print p.__class__.__name__
 	print variable.ityp('"lol"')
+=======
+	"""print p.__class__"""
+>>>>>>> cbcf7eaa24df4357b9f8f53f1f9dce0922053d33
