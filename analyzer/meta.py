@@ -87,4 +87,4 @@ if __name__ == '__main__':
 	p.addstmt('print', 'a', 2)
 	p.addstmt('list', 'c', 'int')
 	print p
-	print p.__class__
+	"""print p.__class__"""
