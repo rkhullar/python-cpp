@@ -3,12 +3,12 @@
 """
 @author		:	Rajan Khullar
 @created	:	04/02/16
-@updated	:	04/26/16
+@updated	:	04/30/16
 """
 
 import tpg, logic, meta
 
-class phase1:
+class phaser:
 	def __init__(self, filepath):
 		self.filepath = filepath
 		self.m = logic.magic()
@@ -23,9 +23,10 @@ class phase1:
 						self.p.addlogic(node)
 					except Exception:
 						print tpg.exc()
+		self.p.sanitize()
 
 if __name__ == '__main__':
-	o = phase1('input/parser-1.in')
+	o = phaser('input/parser-1.in')
 	o.parse()
+	#print o.p.stats()
 	print o.p
-	print 'end'

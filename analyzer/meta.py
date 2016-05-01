@@ -24,6 +24,39 @@ class program:
 	def addstmt(self, *args):
 		self.main.append(statement(*args))
 
+	def get(self, mode='variable'):
+		out = []
+		for node in self.main:
+			if node.__class__.__name__ == mode:
+				out.append(node)
+		return out
+
+	def getvar(self, name):
+		for v in self.get('variable'):
+			if v.name == name:
+				return v
+		return -1
+
+	def stats(self):
+		return {'stmt':len(self.get('statement')), 'var':len(self.get('variable'))}
+
+	def sanitize(self):
+		mem = {}
+		out = []
+		for node in self.get('statement'):
+			flag = True
+			if node.oper == 'assign':
+				v = node.args[0]
+				if v not in mem:
+					flag = False
+					exp = node.args[1]
+					typ = variable.ityp(exp)
+					out.append(variable(v, typ, exp))
+					mem[v] = typ
+			if flag:
+				out.append(node)
+		self.main = out
+
 class struct:
 	def __init__(self):
 		self.members = []
@@ -41,7 +74,36 @@ class variable:
 		if self.value:
 			return '%s %s = %s;' % (t, n, v)
 		else:
-			return '%s %s;' % (t, n, v)
+			return '%s %s;' % (t, n)
+
+	@staticmethod
+	def ibool(s):
+		s = s.lower()
+		if s == 'false':
+			return False
+		if s == 'true':
+			return True
+		raise ValueError
+
+	@staticmethod
+	def istr(s):
+		for f in [int, float, variable.ibool, str]:
+			try:
+				return f(s)
+			except:
+				pass
+
+	@staticmethod
+	def ityp(s):
+		s = variable.istr(s)
+		t = type(s).__name__
+		if t != 'str':
+			return t
+		if s[0] == '\"' and s[-1] == '\"':
+			return 'str'
+		if '.' in s:
+			return 'exp'
+		return 'var'
 
 class list(variable):
 	pass
@@ -87,4 +149,5 @@ if __name__ == '__main__':
 	p.addstmt('print', 'a', 2)
 	p.addstmt('list', 'c', 'int')
 	print p
-	print p.__class__
+	print p.__class__.__name__
+	print variable.ityp('"lol"')
