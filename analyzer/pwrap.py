@@ -3,7 +3,7 @@
 """
 @author		:	Rajan Khullar
 @created	:	04/26/16
-@updated	:	04/30/16
+@updated	:	05/01/16
 """
 
 from meta import *
@@ -31,7 +31,10 @@ def ops(sym):
 	return operations[sym]
 
 def typ(arg):
-	return str(arg)[1::]
+	o = str(arg)[1::]
+	if o == 'str':
+		o = 'string'
+	return o
 
 def test(x):
 	print type(x).__name__, x

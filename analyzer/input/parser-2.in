@@ -6,7 +6,10 @@ print 'hello world'
 
 print 1, 2, 'three', a
 
-b = ['A','B','C']
+b = $str[]
+b << 'A'
+b << 'B'
+b << 'C'
 b[1] = 'X'
-b.append('D')
+b << 'D'
 print b

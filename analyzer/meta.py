@@ -40,23 +40,6 @@ class program:
 	def stats(self):
 		return {'stmt':len(self.get('statement')), 'var':len(self.get('variable'))}
 
-	def sanitize(self):
-		mem = {}
-		out = []
-		for node in self.get('statement'):
-			flag = True
-			if node.oper == 'assign':
-				v = node.args[0]
-				if v not in mem:
-					flag = False
-					exp = node.args[1]
-					typ = variable.ityp(exp)
-					out.append(variable(v, typ, exp))
-					mem[v] = typ
-			if flag:
-				out.append(node)
-		self.main = out
-
 class struct:
 	def __init__(self):
 		self.members = []
@@ -100,7 +83,7 @@ class variable:
 		if t != 'str':
 			return t
 		if s[0] == '\"' and s[-1] == '\"':
-			return 'str'
+			return 'string'
 		if '.' in s:
 			return 'exp'
 		return 'var'
@@ -132,8 +115,8 @@ class statement:
 			return 'cout << ' + ' << " " << '.join(l) + ' << endl;'
 
 		if self.oper == 'list':
-			typ = self.args[1]
 			var = self.args[0]
+			typ = self.args[1]
 			return 'list<%s> %s = new list<%s>();' % (typ, var, typ)
 
 		if self.oper == 'append':
@@ -149,9 +132,6 @@ if __name__ == '__main__':
 	p.addstmt('print', 'a', 2)
 	p.addstmt('list', 'c', 'int')
 	print p
-<<<<<<< HEAD
 	print p.__class__.__name__
 	print variable.ityp('"lol"')
-=======
 	"""print p.__class__"""
->>>>>>> cbcf7eaa24df4357b9f8f53f1f9dce0922053d33
