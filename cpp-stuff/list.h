@@ -1,11 +1,5 @@
-/*
-
-*/
-
-#include <iostream>
-#include <string>
-
-using namespace std;
+#ifndef LIST_H
+#define LIST_H
 
 /* Linked list structure */
 
@@ -39,10 +33,4 @@ T ListNode<T>::get_data(void)
     return this->data;
 }
 
-
-int main()
-{
-   cout << "hello world" << endl;
-   ListNode<int> item = ListNode<int>(6);
-   cout << item.get_data() << endl;
-}
+#endif

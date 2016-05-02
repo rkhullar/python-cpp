@@ -14,10 +14,13 @@ class phaser:
 		self.filepath = filepath
 		self.m = logic.magic()
 		self.p = program()
+		self.vmem = {}	# simple variables
+		self.lmem = {}	# list / dict variables
 
 	def parse(self):
 		self.parse_syntax()
 		self.parse_semantics()
+		self.post_clean()
 
 	def parse_syntax(self):
 		with open(self.filepath, 'r') as file:
@@ -30,8 +33,6 @@ class phaser:
 						print tpg.exc()
 
 	def parse_semantics(self):
-		vmem = {}	# simple variables
-		lmem = {}	# list / dict variables
 		out = []	# new program main
 		for node in self.p.get('statement'):
 			flag = True
@@ -39,23 +40,27 @@ class phaser:
 				o = node.args[0]
 				# simple assign
 				if len(node.args) == 2:
-					if o not in vmem:
+					if o not in self.vmem:
 						flag = False
 						exp = node.args[1]
 						typ = variable.ityp(exp)
 						out.append(variable(o, typ, exp))
-						vmem[o] = typ
+						self.vmem[o] = typ
 				# list/dict assign
 				if len(node.args) == 3:
-					if o not in lmem:
+					if o not in self.lmem:
 						key = node.args[1]
 						exp = node.args[2]
 						typ = variable.ityp(exp)
 						out.append(statement('list',o,typ))
-						lmem[o] = typ
+						self.lmem[o] = typ
 			if flag:
 				out.append(node)
 		self.p.main = out
+
+	def post_clean(self):
+		for o in self.lmem:
+			self.p.main.append(statement('delete',o))
 
 if __name__ == '__main__':
 	o = phaser('input/parser-1.in')

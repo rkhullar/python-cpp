@@ -51,7 +51,7 @@ def expr(mode, a, x=None):
 	if mode == 'var':
 		return a
 	if mode == 'list':
-		return '%s.get(%s)' % (a, x)
+		return '%s->get(%s)' % (a, x)
 
 if __name__ == '__main__':
 	'''

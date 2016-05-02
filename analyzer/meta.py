@@ -108,7 +108,7 @@ class statement:
 			if len(self.args) == 3:
 				key = str(self.args[1])
 				exp = str(self.args[2])
-				return '%s.set(%s, %s);' % (var, key, exp)
+				return '%s->set(%s, %s);' % (var, key, exp)
 
 		if self.oper == 'print':
 			l = map(str, self.args[0])
@@ -117,12 +117,16 @@ class statement:
 		if self.oper == 'list':
 			var = self.args[0]
 			typ = self.args[1]
-			return 'list<%s> %s = new list<%s>();' % (typ, var, typ)
+			return 'list<%s> *%s = new list<%s>();' % (typ, var, typ)
 
 		if self.oper == 'append':
 			var = str(self.args[0])
 			exp = str(self.args[1])
-			return '%s.append(%s);' % (var, exp)
+			return '%s->add(%s);' % (var, exp)
+
+		if self.oper == 'delete':
+			var = str(self.args[0])
+			return 'delete %s;' % var
 
 
 if __name__ == '__main__':
