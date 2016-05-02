@@ -26,7 +26,15 @@ void m3()
 
 void m4()
 {
-	List<string> * b = new List<string>("A");
+	List<string> * b = new List<string>();
+	b->add("A");
+	b->add("B");
+	b->add("C");
+	b->add("D");
+	b->print();
+	cout << b->get(3) << endl;
+	b->set(0,"X");
+	b->set(3,"Y");
 	b->print();
 	delete b;
 }
