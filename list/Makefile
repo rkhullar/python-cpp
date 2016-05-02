@@ -3,11 +3,10 @@ rebuild: clean compile
 clean:
 	rm -rf *~ *.o *.gch target
 
-compile: lib.h lib.cc list.h list.hxx main.cc
-	g++ -c lib.cc
-	g++ -c list.h
+compile: square.h square.cc list.h main.cc
+	g++ -c square.cc
 	g++ -c main.cc
-	g++ lib.o list.o main.o -o target
+	g++ square.o main.o -o target
 
 test: rebuild
 	./target
