@@ -39,8 +39,29 @@ void m4()
 	delete b;
 }
 
+void m5()
+{
+	cout << 1 << endl;
+	cout << "a" << endl;
+	cout << 0 << " " << 1 << " " << 2 << " " << 3 << " " << 4 << " " << 5 << " " << 6 << " " << 7 << " " << 8 << " " << 9 << endl;
+	cout << "this" << " " << "is" << " " << "a" << " " << "string" << " " << "list" << endl;
+	int a = 5;
+	string b = "hello world";
+	cout << a << " " << b << endl;
+	List<int> *d = new List<int>();
+	List<string> *e = new List<string>();
+	d->add(5);
+	e->add("six");
+	d->add(7);
+	e->set(0, "beta");
+	d->print();
+	e->print();
+	delete d;
+	delete e;
+}
+
 int main()
 {
-   m4();
+   m5();
    return 0;
 }
