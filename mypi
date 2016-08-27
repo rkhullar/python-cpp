@@ -1,0 +1,7 @@
+mkdir $2
+cp support/list.h $2/
+cp support/Makefile $2/
+cp support/template.txt $2/main.cc
+./support/phase.py $1 >> $2/main.cc
+echo "return 0;" >> $2/main.cc
+echo "}" >> $2/main.cc

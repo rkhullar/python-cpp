@@ -1,0 +1,19 @@
+print 'hello world', 5
+a = 5
+b = 'six'
+print a, b
+names = $str[]
+names << 'wenjia'
+names << 'voris'
+names << 'saito'
+print names
+print names[0], 'is handsome'
+lucky = $int[]
+lucky << 13
+lucky << 666
+lucky << 7
+print lucky
+lucky[1] = 42
+lucky[0] = 8
+print 'lucky numbers', lucky
+print 'end of file'
